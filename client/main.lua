@@ -300,7 +300,32 @@ local function destroyExitRoofZones()
 end
 
 local function registerVehicleStorage()
-
+    local coords = vec3(config.locations.vehicleStorage.coords.xyz)
+    vehicleZone = lib.zones.box({
+        coords = coords,
+        size = vec3(6.0, 4.0, 4.0),
+        rotation = 0.0,
+        debug = config.debugPoly,
+        onEnter = function()
+            if cache.vehicle then
+                lib.showTextUI(locale('info.store_vehicle'))
+            else
+                lib.showTextUI(locale('info.vehicles'))
+            end
+        end,
+        onExit = function()
+            lib.hideTextUI()
+        end,
+        inside = function()
+            if IsControlJustReleased(0, 38) then
+                if cache.vehicle then
+                    DeleteVehicle(cache.vehicle)
+                else
+                    menuVehicleGarage()
+                end
+            end
+        end
+    })
 end
 
 local function destroyVehicleStorageZones()
@@ -313,7 +338,32 @@ local function destroyVehicleStorageZones()
 end
 
 local function registerHeliStorage()
-
+    local coords = vec3(config.locations.helicopterStorage.coords.xyz)
+    heliZone = lib.zones.box({
+        coords = coords,
+        size = vec3(4, 4, 4),
+        rotation = 267.49,
+        debug = config.debugPoly,
+        onEnter = function()
+            if cache.vehicle then
+                lib.showTextUI(locale('info.store_helicopters'))
+            else
+                lib.showTextUI(locale('info.helicopters'))
+            end
+        end,
+        onExit = function()
+            lib.hideTextUI()
+        end,
+        inside = function()
+            if IsControlJustReleased(0, 38) then
+                if cache.vehicle then
+                    DeleteVehicle(cache.vehicle)
+                else
+                    menuHeliGarage()
+                end
+            end
+        end
+    })
 end
 
 local function destroyHeliStorageZones()
